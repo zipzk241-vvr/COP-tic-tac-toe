@@ -1,59 +1,70 @@
 import { useState } from "react";
+import { useNavigate } from "react-router";
+import * as S from "./StartPage.styles";
 import Container from "../../components/common/Container/Container";
 import Button from "../../components/common/Button/Button";
-import "./StartPage.css";
 
-function StartPage({ onStartGame }) {
+function StartPage() {
+  const navigate = useNavigate(); 
   const [playerXName, setPlayerXName] = useState("Гравець X");
   const [playerOName, setPlayerOName] = useState("Гравець O");
 
   const handleStartGame = () => {
-    onStartGame({
-      playerXName,
-      playerOName,
-    });
+    const userId =
+      Date.now().toString(36) + Math.random().toString(36).substr(2);
+
+    // Зберігаємо імена гравців у sessionStorage
+    sessionStorage.setItem(
+      `game-${userId}`,
+      JSON.stringify({
+        playerXName,
+        playerOName,
+        startTime: new Date().toISOString(),
+      })
+    );
+    navigate(`/game/${userId}`);
   };
 
   return (
     <Container>
-      <div className="start-page">
-        <h1 className="start-page__title">Хрестики-Нулики</h1>
+      <S.StartPageWrapper>
+        <S.Title>Хрестики-Нулики</S.Title>
 
-        <p className="start-page__description">
+        <S.Description>
           Класична гра для двох гравців. Першим скласти ряд із трьох власних
           знаків горизонтально, вертикально або по діагоналі!
-        </p>
+        </S.Description>
 
-        <div className="start-page__players">
-          <div className="player-setup">
-            <label htmlFor="player-x">Ім'я гравця X: </label>
-            <input
+        <S.PlayersSetup>
+          <S.PlayerSetup>
+            <S.Label htmlFor="player-x">Ім'я гравця X:</S.Label>
+            <S.Input
               id="player-x"
               type="text"
               value={playerXName}
               onChange={(e) => setPlayerXName(e.target.value)}
               placeholder="Гравець X"
             />
-          </div>
+          </S.PlayerSetup>
 
-          <div className="player-setup">
-            <label htmlFor="player-o">Ім'я гравця O: </label>
-            <input
+          <S.PlayerSetup>
+            <S.Label htmlFor="player-o">Ім'я гравця O:</S.Label>
+            <S.Input
               id="player-o"
               type="text"
               value={playerOName}
               onChange={(e) => setPlayerOName(e.target.value)}
               placeholder="Гравець O"
             />
-          </div>
-        </div>
+          </S.PlayerSetup>
+        </S.PlayersSetup>
 
-        <div className="start-page__actions">
+        <S.Actions>
           <Button onClick={handleStartGame} variant="primary">
             Почати гру
           </Button>
-        </div>
-      </div>
+        </S.Actions>
+      </S.StartPageWrapper>
     </Container>
   );
 }

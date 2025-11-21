@@ -1,8 +1,10 @@
-function Button({ children, onClick, variant = "primary" }) {
+import { StyledButton } from "./Button.styles";
+
+function Button({ children, onClick, variant = "primary", ...props }) {
   return (
-    <button className={`button button--${variant}`} onClick={onClick}>
+    <StyledButton onClick={onClick} variant={variant} {...props}>
       {children}
-    </button>
+    </StyledButton>
   );
 }
 

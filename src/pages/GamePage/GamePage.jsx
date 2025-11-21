@@ -1,12 +1,17 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { useParams, useNavigate } from "react-router"; 
+import * as S from "./GamePage.styles";
 import Container from "../../components/common/Container/Container";
 import Board from "../../components/game/Board/Board";
 import PlayerInfo from "../../components/game/PlayerInfo/PlayerInfo";
 import Button from "../../components/common/Button/Button";
 import useGameLogic from "../../hooks/useGameLogic";
-import "./GamePage.css";
 
-function GamePage({ playerNames, onGameEnd, onBackToStart }) {
+function GamePage() {
+  const { userId } = useParams(); 
+  const navigate = useNavigate(); 
+  const [playerNames, setPlayerNames] = useState(null);
+
   const {
     cells,
     currentPlayer,
@@ -19,33 +24,55 @@ function GamePage({ playerNames, onGameEnd, onBackToStart }) {
     startNewGame,
   } = useGameLogic();
 
+  // Завантаження даних гри з sessionStorage
+  useEffect(() => {
+    const gameData = sessionStorage.getItem(`game-${userId}`);
+    if (gameData) {
+      setPlayerNames(JSON.parse(gameData));
+    } else {
+      navigate("/");
+    }
+  }, [userId, navigate]);
+
   useEffect(() => {
     if (winner || isDraw) {
       const timer = setTimeout(() => {
-        onGameEnd({ winner, isDraw });
+        const results = {
+          winner,
+          isDraw,
+          timestamp: new Date().toISOString(),
+        };
+        sessionStorage.setItem(`result-${userId}`, JSON.stringify(results));
+
+        navigate(`/results/${userId}`);
       }, 1500);
 
       return () => clearTimeout(timer);
     }
-  }, [winner, isDraw, onGameEnd]);
+  }, [winner, isDraw, userId, navigate]);
+
+  if (!playerNames) {
+    return <div>Завантаження...</div>;
+  }
 
   return (
     <Container>
-      <div className="game-page">
-        <h1>Гра в розпалі</h1>
+      <S.GamePageWrapper>
+        <S.Title>Гра в розпалі</S.Title>
+        <S.UserId>ID гри: {userId}</S.UserId>
 
-        <div className="game-page__players">
+        <S.PlayersInfo>
           <PlayerInfo
             player="X"
-            name={playerNames?.playerXName || "Гравець X "}
+            name={playerNames.playerXName}
             isActive={currentPlayer === "X" && isGameActive}
           />
           <PlayerInfo
             player="O"
-            name={playerNames?.playerOName || "Гравець O "}
+            name={playerNames.playerOName}
             isActive={currentPlayer === "O" && isGameActive}
           />
-        </div>
+        </S.PlayersInfo>
 
         <Board
           cells={cells}
@@ -53,25 +80,25 @@ function GamePage({ playerNames, onGameEnd, onBackToStart }) {
           winningLine={winningLine}
         />
 
-        <div className="game-page__info">
+        <S.GameInfo>
           <p>Ходів зроблено: {moveHistory.length}</p>
 
           {!isGameActive && (
-            <p className="game-page__result">
+            <S.GameResult>
               {winner ? `Переможець: ${winner}!` : "Нічия!"}
-            </p>
+            </S.GameResult>
           )}
-        </div>
+        </S.GameInfo>
 
-        <div className="game-page__actions">
+        <S.Actions>
           <Button onClick={startNewGame} variant="secondary">
             Нова гра
           </Button>
-          <Button onClick={onBackToStart} variant="secondary">
+          <Button onClick={() => navigate("/")} variant="secondary">
             На початок
           </Button>
-        </div>
-      </div>
+        </S.Actions>
+      </S.GamePageWrapper>
     </Container>
   );
 }
