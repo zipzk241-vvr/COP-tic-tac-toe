@@ -1,17 +1,10 @@
 import Cell from "../Cell/Cell";
-import "./Board.css";
 
-function Board({ cells, onCellClick, winningLine }) {
+function Board({ cells, onCellClick }) {
   return (
     <div className="board">
       {cells.map((value, index) => (
-        <Cell
-          key={index}
-          value={value}
-          index={index}
-          onClick={onCellClick}
-          isWinning={winningLine?.includes(index)}
-        />
+        <Cell key={index} value={value} index={index} onClick={onCellClick} />
       ))}
     </div>
   );

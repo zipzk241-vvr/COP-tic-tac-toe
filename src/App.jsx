@@ -4,52 +4,61 @@ import GamePage from "./pages/GamePage/GamePage";
 import ResultsPage from "./pages/ResultsPage/ResultsPage";
 import "./App.css";
 
-/**
- * Головний компонент - чистий, керує тільки роутингом
- * React спостерігає за станами компонентів [2]
- */
 function App() {
+  // Стани
   const [currentPage, setCurrentPage] = useState("start");
-  const [playerNames, setPlayerNames] = useState(null);
-  const [gameResult, setGameResult] = useState({ winner: null, isDraw: false });
+  const [cells, setCells] = useState(Array(9).fill(null));
+  const [currentPlayer, setCurrentPlayer] = useState("X");
+  const [winner, setWinner] = useState(null);
+  const [isDraw, setIsDraw] = useState(false);
+  const [scores, setScores] = useState({ X: 0, O: 0, draws: 0 });
 
-  // Обробники навігації
-  const handleStartGame = (names) => {
-    setPlayerNames(names);
+  // Handlers 
+  const handleStartGame = () => {
     setCurrentPage("game");
   };
 
-  const handleGameEnd = ({ winner, isDraw }) => {
-    setGameResult({ winner, isDraw });
-    setCurrentPage("results");
+  const handleCellClick = (index ) => {
+    console.log("Cell clicked:", index);
   };
 
-  const handlePlayAgain = () => {
-    setCurrentPage("game");
+  const handleReset = () => {
+    setCells(Array(9).fill(null));
+    setCurrentPlayer("X");
+    setWinner(null);
+    setIsDraw(false);
   };
 
   const handleBackToStart = () => {
     setCurrentPage("start");
-    setPlayerNames(null);
-    setGameResult({ winner: null, isDraw: false });
+    handleReset();
   };
 
+  const handlePlayAgain = () => {
+    handleReset();
+    setCurrentPage("game");
+  };
+
+  // Рендеринг сторінок 
   return (
     <div className="app">
       {currentPage === "start" && <StartPage onStartGame={handleStartGame} />}
 
       {currentPage === "game" && (
         <GamePage
-          playerNames={playerNames}
-          onGameEnd={handleGameEnd}
+          cells={cells}
+          currentPlayer={currentPlayer}
+          onCellClick={handleCellClick}
+          onReset={handleReset}
           onBackToStart={handleBackToStart}
         />
       )}
 
       {currentPage === "results" && (
         <ResultsPage
-          winner={gameResult.winner}
-          isDraw={gameResult.isDraw}
+          winner={winner}
+          isDraw={isDraw}
+          scores={scores}
           onPlayAgain={handlePlayAgain}
           onBackToStart={handleBackToStart}
         />

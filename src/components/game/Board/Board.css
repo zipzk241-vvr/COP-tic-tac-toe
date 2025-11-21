@@ -2,11 +2,10 @@
   display: grid;
   grid-template-columns: repeat(3, 100px);
   grid-template-rows: repeat(3, 100px);
-  gap: 0;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  padding: 12px;
-  border-radius: 12px;
+  gap: 4px;
+  background-color: #333;
+  padding: 4px;
+  border-radius: 8px;
   margin: 20px auto;
   width: fit-content;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
 }
