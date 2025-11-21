@@ -18,7 +18,7 @@ function App() {
     setCurrentPage("game");
   };
 
-  const handleCellClick = (index) => {
+  const handleCellClick = (index ) => {
     console.log("Cell clicked:", index);
   };
 
