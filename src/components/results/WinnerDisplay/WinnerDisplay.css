@@ -1,0 +1,25 @@
+.winner-display {
+  text-align: center;
+  padding: 40px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 16px;
+  color: white;
+  margin-bottom: 20px;
+}
+
+.winner-display h2 {
+  margin: 0 0 16px 0;
+}
+
+.winner-display__symbol {
+  font-size: 72px;
+  font-weight: bold;
+}
+
+.winner-display__symbol--X {
+  color: #FF6B6B;
+}
+
+.winner-display__symbol--O {
+  color: #4ECDC4;
+}

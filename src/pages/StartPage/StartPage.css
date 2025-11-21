@@ -1,0 +1,25 @@
+.start-page {
+  text-align: center;
+  padding: 60px 20px;
+}
+
+.start-page__title {
+  font-size: 48px;
+  color: #333;
+  margin-bottom: 20px;
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+}
+
+.start-page__description {
+  font-size: 18px;
+  color: #666;
+  max-width: 500px;
+  margin: 0 auto 40px;
+  line-height: 1.6;
+}
+
+.start-page__actions {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+}

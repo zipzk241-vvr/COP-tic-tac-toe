@@ -1,0 +1,28 @@
+.cell {
+  width: 100px;
+  height: 100px;
+  border: 2px solid #333;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  background-color: #fff;
+  transition: background-color 0.3s;
+}
+
+.cell:hover {
+  background-color: #f0f0f0;
+}
+
+.cell__value {
+  font-size: 48px;
+  font-weight: bold;
+}
+
+.cell__value--X {
+  color: #FF6B6B;
+}
+
+.cell__value--O {
+  color: #4ECDC4;
+}

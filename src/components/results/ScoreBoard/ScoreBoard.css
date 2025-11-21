@@ -1,0 +1,30 @@
+.scoreboard {
+  background-color: #fff;
+  padding: 24px;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.scoreboard h3 {
+  margin-top: 0;
+  text-align: center;
+}
+
+.scoreboard__stats {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.scoreboard__item {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px;
+  background-color: #f5f5f5;
+  border-radius: 6px;
+}
+
+.scoreboard__value {
+  font-weight: bold;
+  font-size: 18px;
+}
