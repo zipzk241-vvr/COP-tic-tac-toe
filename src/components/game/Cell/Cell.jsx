@@ -1,6 +1,9 @@
-function Cell({ value, onClick, index }) {
+function Cell({ value, onClick, index, isWinning }) {
   return (
-    <div className="cell" onClick={() => onClick(index)}>
+    <div
+      className={`cell ${isWinning ? "cell--winning" : ""}`}
+      onClick={() => onClick(index)}
+    >
       <span className={`cell__value cell__value--${value}`}>{value || ""}</span>
     </div>
   );
