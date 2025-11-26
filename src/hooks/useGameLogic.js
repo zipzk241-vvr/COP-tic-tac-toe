@@ -13,7 +13,7 @@ function useGameLogic() {
     moveHistory,
     resetGame,
     switchPlayer,
-    updateCell,
+    updateCell, 
     endGame,
   } = useGameState();
 

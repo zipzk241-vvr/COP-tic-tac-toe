@@ -52,6 +52,7 @@ export function useGameStats() {
     });
   };
 
+  
   return {
     stats,
     updateStats,

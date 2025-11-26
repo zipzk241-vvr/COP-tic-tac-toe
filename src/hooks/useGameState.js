@@ -35,7 +35,7 @@ function useGameState() {
     switchPlayer,
     updateCell,
     endGame,
-  };
+  }; 
 }
 
 export default useGameState;
