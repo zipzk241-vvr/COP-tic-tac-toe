@@ -1,30 +1,38 @@
 import { useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router"; 
+import { useParams, useNavigate } from "react-router";
 import * as S from "./GamePage.styles";
 import Container from "../../components/common/Container/Container";
 import Board from "../../components/game/Board/Board";
 import PlayerInfo from "../../components/game/PlayerInfo/PlayerInfo";
 import Button from "../../components/common/Button/Button";
-import useGameLogic from "../../hooks/useGameLogic";
+
+import {
+  useCells,
+  useCurrentPlayer,
+  useIsGameActive,
+  useWinner,
+  useIsDraw,
+  useWinningLine,
+  useMakeMove,
+  useResetGame,
+  useSettings,
+} from "../../store";
 
 function GamePage() {
-  const { userId } = useParams(); 
-  const navigate = useNavigate(); 
+  const { userId } = useParams();
+  const navigate = useNavigate();
   const [playerNames, setPlayerNames] = useState(null);
+  const cells = useCells();
+  const currentPlayer = useCurrentPlayer();
+  const isGameActive = useIsGameActive();
+  const winner = useWinner();
+  const isDraw = useIsDraw();
+  const winningLine = useWinningLine();
 
-  const {
-    cells,
-    currentPlayer,
-    isGameActive,
-    moveHistory,
-    winner,
-    isDraw,
-    winningLine,
-    handleCellClick,
-    startNewGame,
-  } = useGameLogic();
+  const makeMove = useMakeMove();
+  const resetGame = useResetGame();
+  const settings = useSettings();
 
-  // Завантаження даних гри з sessionStorage
   useEffect(() => {
     const gameData = sessionStorage.getItem(`game-${userId}`);
     if (gameData) {
@@ -37,13 +45,8 @@ function GamePage() {
   useEffect(() => {
     if (winner || isDraw) {
       const timer = setTimeout(() => {
-        const results = {
-          winner,
-          isDraw,
-          timestamp: new Date().toISOString(),
-        };
+        const results = { winner, isDraw, timestamp: new Date().toISOString() };
         sessionStorage.setItem(`result-${userId}`, JSON.stringify(results));
-
         navigate(`/results/${userId}`);
       }, 1500);
 
@@ -58,30 +61,29 @@ function GamePage() {
   return (
     <Container>
       <S.GamePageWrapper>
+        <S.SettingsButton onClick={() => navigate("/settings")}>
+          ⚙️
+        </S.SettingsButton>
+
         <S.Title>Гра в розпалі</S.Title>
-        <S.UserId>ID гри: {userId}</S.UserId>
 
         <S.PlayersInfo>
           <PlayerInfo
             player="X"
-            name={playerNames.playerXName}
+            name={playerNames.playerXName || settings.playerXName}
             isActive={currentPlayer === "X" && isGameActive}
           />
           <PlayerInfo
             player="O"
-            name={playerNames.playerOName}
+            name={playerNames.playerOName || settings.playerOName}
             isActive={currentPlayer === "O" && isGameActive}
           />
         </S.PlayersInfo>
 
-        <Board
-          cells={cells}
-          onCellClick={handleCellClick}
-          winningLine={winningLine}
-        />
+        <Board cells={cells} onCellClick={makeMove} winningLine={winningLine} />
 
         <S.GameInfo>
-          <p>Ходів зроблено: {moveHistory.length}</p>
+          <p>Ходів зроблено: {cells.filter((c) => c !== null).length}</p>
 
           {!isGameActive && (
             <S.GameResult>
@@ -91,7 +93,7 @@ function GamePage() {
         </S.GameInfo>
 
         <S.Actions>
-          <Button onClick={startNewGame} variant="secondary">
+          <Button onClick={resetGame} variant="primary">
             Нова гра
           </Button>
           <Button onClick={() => navigate("/")} variant="secondary">

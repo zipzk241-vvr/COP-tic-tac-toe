@@ -1,6 +1,7 @@
 import styled from "styled-components";
 
 export const StartPageWrapper = styled.div`
+  position: relative;
   text-align: center;
   padding: 60px 20px;
   background: rgba(255, 255, 255, 0.95);
@@ -10,11 +11,32 @@ export const StartPageWrapper = styled.div`
   max-width: 600px;
 `;
 
+export const SettingsButton = styled.button`
+  position: absolute;
+  top: 20px;
+  padding: 0;
+  right: 20px;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: #667eea;
+  color: white;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  transition: all 0.3s;
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+
+  &:hover {
+    transform: rotate(90deg) scale(1.1);
+    background: #764ba2;
+  }
+`;
+
 export const Title = styled.h1`
   font-size: 48px;
   color: #667eea;
   margin-bottom: 20px;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
 
   @media (max-width: 768px) {
     font-size: 36px;
@@ -86,4 +108,19 @@ export const Actions = styled.div`
   gap: 16px;
   justify-content: center;
   flex-wrap: wrap;
+`;
+
+export const StatsLink = styled.button`
+  margin-top: 30px;
+  background: none;
+  border: none;
+  color: #667eea;
+  font-size: 16px;
+  cursor: pointer;
+  text-decoration: underline;
+  transition: color 0.3s;
+
+  &:hover {
+    color: #764ba2;
+  }
 `;

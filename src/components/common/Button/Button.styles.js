@@ -10,7 +10,7 @@ export const StyledButton = styled.button`
   transition: all 0.3s ease;
 
   background-color: ${(props) =>
-    props.variant === "primary" ? "#4CAF50" : "#2196F3"};
+    props.$variant === "primary" ? "#4CAF50" : "#2196F3"};
   color: white;
 
   &:hover {

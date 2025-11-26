@@ -3,9 +3,15 @@ import { useNavigate } from "react-router";
 import * as S from "./StartPage.styles";
 import Container from "../../components/common/Container/Container";
 import Button from "../../components/common/Button/Button";
+import { useLocale } from "../../context/LocaleContext";
+import {
+  useSettings,
+} from "../../store";
 
 function StartPage() {
-  const navigate = useNavigate(); 
+  const navigate = useNavigate();
+  const settings = useSettings();
+  const { t } = useLocale();
   const [playerXName, setPlayerXName] = useState("Гравець X");
   const [playerOName, setPlayerOName] = useState("Гравець O");
 
@@ -13,7 +19,6 @@ function StartPage() {
     const userId =
       Date.now().toString(36) + Math.random().toString(36).substr(2);
 
-    // Зберігаємо імена гравців у sessionStorage
     sessionStorage.setItem(
       `game-${userId}`,
       JSON.stringify({
@@ -28,7 +33,10 @@ function StartPage() {
   return (
     <Container>
       <S.StartPageWrapper>
-        <S.Title>Хрестики-Нулики</S.Title>
+        <S.SettingsButton onClick={() => navigate("/settings")}>
+          ⚙️
+        </S.SettingsButton>
+        <S.Title>{t("gameTitle")}</S.Title>
 
         <S.Description>
           Класична гра для двох гравців. Першим скласти ряд із трьох власних
@@ -37,22 +45,22 @@ function StartPage() {
 
         <S.PlayersSetup>
           <S.PlayerSetup>
-            <S.Label htmlFor="player-x">Ім'я гравця X:</S.Label>
+            <S.Label htmlFor="player-x">{t("playerX")}:</S.Label>
             <S.Input
               id="player-x"
               type="text"
-              value={playerXName}
+              value={settings.playerXName}
               onChange={(e) => setPlayerXName(e.target.value)}
               placeholder="Гравець X"
             />
           </S.PlayerSetup>
 
           <S.PlayerSetup>
-            <S.Label htmlFor="player-o">Ім'я гравця O:</S.Label>
+            <S.Label htmlFor="player-o">{t("playerO")}:</S.Label>
             <S.Input
               id="player-o"
               type="text"
-              value={playerOName}
+              value={settings.playerOName}
               onChange={(e) => setPlayerOName(e.target.value)}
               placeholder="Гравець O"
             />
@@ -61,9 +69,12 @@ function StartPage() {
 
         <S.Actions>
           <Button onClick={handleStartGame} variant="primary">
-            Почати гру
+            {t("startGame")}
           </Button>
         </S.Actions>
+        <S.StatsLink onClick={() => navigate("/statistics")}>
+          Переглянути статистику
+        </S.StatsLink>
       </S.StartPageWrapper>
     </Container>
   );
